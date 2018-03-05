@@ -3,3 +3,4 @@
 /.env
 /.nuxt
 /dist
+/yarn-error.log
