@@ -41,16 +41,16 @@ module.exports = {
     //buildDir: resolve(__dirname, '..', 'compiled'),
     //buildDir: 'compiled/apibuilder',
     build: {
-        // babel: {
-        //     plugins: [
-        //         ["transform-imports", {
-        //             "vuetify": {
-        //                 "transform": "vuetify/es5/components/${member}",
-        //                 "preventFullImport": true
-        //             }
-        //         }]
-        //     ]
-        // },
+        babel: {
+            plugins: [
+                ["transform-imports", {
+                    "vuetify": {
+                        "transform": "vuetify/es5/components/${member}",
+                        "preventFullImport": true
+                    }
+                }]
+            ]
+        },
 
         extractCSS: true,
 
@@ -72,8 +72,8 @@ module.exports = {
     modules: [
         '@nuxtjs/font-awesome',
         '@nuxtjs/axios',
-        '@nuxtjs/auth'
-    //    'manablox-ui-toolkit'
+        '@nuxtjs/auth',
+        'manablox-ui'
     ],
 
     plugins: [
