@@ -49,7 +49,7 @@ export default {
                 {
                     type: 'link',
                     label: 'Dashboard',
-                    url: '/api-builder',
+                    url: '/',
                     icon: 'home'
                 },
 
@@ -63,19 +63,19 @@ export default {
                 {
                     type: 'link',
                     label: 'Users',
-                    url: '/api-builder/users',
+                    url: '/users',
                     icon: 'fa-user'
                 },
                 {
                     type: 'link',
                     label: 'Roles',
-                    url: '/api-builder/roles',
+                    url: '/roles',
                     icon: 'fa-lock'
                 },
                 {
                     type: 'link',
                     label: 'Permissions',
-                    url: '/api-builder/permissions',
+                    url: '/permissions',
                     icon: 'fa-shield'
                 },
 
@@ -89,7 +89,7 @@ export default {
                 {
                     type: 'link',
                     label: 'Models',
-                    url: '/api-builder/models',
+                    url: '/models',
                     icon: 'home'
                 },
 
