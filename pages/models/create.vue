@@ -61,8 +61,8 @@
                                     </v-flex>
                                     <v-flex xs12 v-for="(field, fieldId) in datamodel.fields" :key="`datafield-${ fieldId }`">
                                         <v-layout row wrap>
-                                            <v-flex xs6>
-                                                <v-text-field box small
+                                            <v-flex xs4>
+                                                <v-text-field small
                                                     :disabled="isSubmitting"
                                                     :loading="isSubmitting"
                                                     label="Field name"
@@ -70,15 +70,52 @@
                                                     required
                                                 ></v-text-field>
                                             </v-flex>
-                                            <v-flex xs6>
+                                            <v-flex xs3>
                                                 <v-select
                                                     dark
                                                     label="Field type"
                                                     :items="fieldtypes"
                                                     v-model="field.type"
+                                                    item-value="type"
                                                     item-text="label"
                                                     :value-comparator="(a,b) => { return a.type == b.type }"
                                                 ></v-select>
+                                                
+                                                <v-select v-if="field.type == 'relation_one'"
+                                                    dark
+                                                    label="Relation to"
+                                                    :items="datamodels"
+                                                    v-model="field.relation_one"
+                                                    item-text="model_name"
+                                                    :value-comparator="(a,b) => { return a.id == b.id }"
+                                                ></v-select>
+
+                                                <v-select v-if="field.type == 'relation_many'"
+                                                    dark
+                                                    label="Relation to"
+                                                    :items="datamodels"
+                                                    v-model="field.relation_many"
+                                                    item-text="model_name"
+                                                    :value-comparator="(a,b) => { return a.id == b.id }"
+                                                ></v-select>
+                                                
+                                            </v-flex>
+                                            <v-flex xs2 pt-4 pl-3>
+                                                <v-switch
+                                                    v-model="field.required"
+                                                    label="required"
+                                                ></v-switch>
+                                            </v-flex>
+                                            <v-flex xs2 pt-4 pl-3>
+                                                <v-switch
+                                                    v-model="field.unique"
+                                                    label="unique"
+                                                ></v-switch>
+                                            </v-flex>
+                                            <v-flex xs1 pt-4 pl-3>
+                                                <v-btn right outline icon small color="error" v-on:click.prevent="RemoveModelField(field)">
+                                                    <v-icon small>fa-trash</v-icon>
+                                                </v-btn>
                                             </v-flex>
                                         </v-layout>
                                     </v-flex>
@@ -142,18 +179,58 @@ export default {
 
         let fieldtypes = [
             {
+                type: 'boolean',
+                label: 'Boolean'
+            },
+            {
+                type: 'integer',
+                label: 'Number (integer)'
+            },
+            {
+                type: 'float',
+                label: 'Number (float)'
+            },
+            {
+                type: 'string',
+                label: 'String (max. 255 characters)'
+            },
+            {
                 type: 'text',
                 label: 'Text'
             },
             {
-                type: 'number',
-                label: 'Number'
+                type: 'date',
+                label: 'Date'
+            },
+            {
+                type: 'datetime',
+                label: 'Date and time'
+            },
+            {
+                type: 'time',
+                label: 'Time'
+            },
+            {
+                type: 'relation_one',
+                label: 'Relation to one'
+            },
+            {
+                type: 'relation_many',
+                label: 'Relation to many'
             }
         ]
 
-        let roles = null
+        let datamodels = null
+
+        try {
+            datamodels = await app.$axios.$get(`/api/v1/models`)
+            datamodels = datamodels.models;
+        }catch(e){
+            console.log(e);
+        }
 
         return {
+            datamodels,
             datamodel,
             fieldtypes,
             isSubmitting: false,
@@ -169,7 +246,7 @@ export default {
 
             try{
                 await this.$axios.$post(`/api/v1/models`, this.datamodel);
-                this.$router.push('.');
+                //this.$router.push('.');
             }catch(e){
                 this.errors = [];
                 this.errors.push(e.response.data.error.message);
@@ -181,8 +258,14 @@ export default {
         AddModelField(){
             this.datamodel.fields.push({
                 name: '',
-                type: ''
+                type: '',
+                unique: false,
+                required: false
             });
+        },
+
+        RemoveModelField(field){
+            this.datamodel.fields.splice(this.datamodel.fields.indexOf(field), 1)
         }
     }
 
