@@ -1,6 +1,6 @@
 {
   "name": "manablox-api-builder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "api builder for manablox built on nuxtjs",
   "main": "index.js",
   "repository": "git@github.com:daspete/manablox-api-builder.git",
