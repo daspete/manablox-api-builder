@@ -246,7 +246,7 @@ export default {
 
             try{
                 await this.$axios.$post(`/api/v1/models`, this.datamodel);
-                //this.$router.push('.');
+                this.$router.push('.');
             }catch(e){
                 this.errors = [];
                 this.errors.push(e.response.data.error.message);
