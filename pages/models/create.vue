@@ -78,6 +78,7 @@
                                                     v-model="field.type"
                                                     item-value="type"
                                                     item-text="label"
+                                                    v-on:input="OnFieldTypeChange(field)"
                                                     :value-comparator="(a,b) => { return a.type == b.type }"
                                                 ></v-select>
                                                 
@@ -87,7 +88,7 @@
                                                     :items="datamodels"
                                                     v-model="field.relation_one"
                                                     item-text="model_name"
-                                                    :value-comparator="(a,b) => { return a.id == b.id }"
+                                                    item-value="id"
                                                 ></v-select>
 
                                                 <v-select v-if="field.type == 'relation_many'"
@@ -96,7 +97,7 @@
                                                     :items="datamodels"
                                                     v-model="field.relation_many"
                                                     item-text="model_name"
-                                                    :value-comparator="(a,b) => { return a.id == b.id }"
+                                                    item-value="id"
                                                 ></v-select>
                                                 
                                             </v-flex>
@@ -173,8 +174,7 @@ export default {
             model_name: '',
             model_slug: '',
             model_description: '',
-            fields: [],
-            relations: []
+            fields: []
         }
 
         let fieldtypes = [
@@ -253,6 +253,15 @@ export default {
             }
 
             this.isSubmitting = false;
+        },
+
+        OnFieldTypeChange(field){
+            if(typeof field.relation_one !== 'undefined' && field.type != 'relation_one'){
+                delete(field.relation_one)
+            }
+            if(typeof field.relation_many !== 'undefined' && field.type != 'relation_many'){
+                delete(field.relation_many)
+            }
         },
 
         AddModelField(){
