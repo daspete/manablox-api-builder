@@ -54,6 +54,8 @@ module.exports = {
 
         extractCSS: true,
 
+        cssSourceMap: false,
+
         extend(config, ctx) {
             if (ctx.isServer) {
                 config.externals = [
