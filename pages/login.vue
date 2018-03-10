@@ -77,6 +77,8 @@ export default {
                 await this.$auth.login({
                     data: this.credentials
                 });
+
+                
             }catch(e){
                 this.errors = [];
                 this.errors.push(e.response.data.error);
